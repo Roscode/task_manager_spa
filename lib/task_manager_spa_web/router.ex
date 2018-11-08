@@ -21,5 +21,8 @@ defmodule TaskManagerSpaWeb.Router do
 
   scope "/api/v1", TaskManagerSpaWeb do
     pipe_through :api
+
+    resources "/tasks", TaskController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
