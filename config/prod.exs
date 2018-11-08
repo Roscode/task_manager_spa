@@ -1,5 +1,17 @@
 use Mix.Config
 
+get_secret = fn name ->
+  base = Path.expand("~/.config/task_manager_spa")
+  File.mkdir_p!(base)
+  path = Path.join(base, name)
+  unless File.exists?(path) do
+    secret = Base.encode16(:crypto.strong_rand_bytes(32))
+    File.write!(path, secret)
+  end
+  String.trim(File.read!(path))
+end
+
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -10,7 +22,11 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :task_manager_spa, TaskManagerSpaWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
+  server: true,
+  root: ".",
+  version: Application.spec(:phoenix_distillery, :vsn),
+  secret_key_base: get_secret.("key_base"),
+  http: [:inet6, port: {:system, "PORT"}],
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
@@ -68,4 +84,8 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+config :task_manager, TaskManager.Repo,
+  username: "task_manager",
+  password: get_secret.("db_pass"),
+  database: "task_manager_spa_prod",
+  pool_size: 15

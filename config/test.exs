@@ -6,13 +6,25 @@ config :task_manager_spa, TaskManagerSpaWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+get_secret = fn name ->
+  base = Path.expand("~/.config/task_manager")
+  File.mkdir_p!(base)
+  path = Path.join(base, name)
+  unless File.exists?(path) do
+    secret = Base.encode16(:crypto.strong_rand_bytes(32))
+    File.write!(path, secret)
+  end
+  String.trim(File.read!(path))
+end
+
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 
 # Configure your database
 config :task_manager_spa, TaskManagerSpa.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "task_manager_dev",
+  password: get_secret.("dev_db_pass"),
   database: "task_manager_spa_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
