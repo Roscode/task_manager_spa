@@ -7,7 +7,7 @@ config :task_manager_spa, TaskManagerSpaWeb.Endpoint,
   server: false
 
 get_secret = fn name ->
-  base = Path.expand("~/.config/task_manager")
+  base = Path.expand("~/.config/task_manager_spa")
   File.mkdir_p!(base)
   path = Path.join(base, name)
   unless File.exists?(path) do

@@ -22,10 +22,12 @@ end
 # which you should run after static files are built and
 # before starting your production server.
 config :task_manager_spa, TaskManagerSpaWeb.Endpoint,
+  server: true,
+  root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
   secret_key_base: get_secret.("key_base"),
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "tasks3.roscode.party", port: 80],
+  http: [:inet6, port: {:system, "PORT"}],
+  url: [host: "tasks3.roscode.party", port: 443, scheme: "https"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -82,8 +84,9 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-config :task_manager, TaskManager.Repo,
+config :task_manager_spa, TaskManagerSpa.Repo,
   username: "task_manager",
   password: get_secret.("db_pass"),
   database: "task_manager_spa_prod",
+  hostname: "localhost",
   pool_size: 15
