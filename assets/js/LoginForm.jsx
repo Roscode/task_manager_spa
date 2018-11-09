@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout, changeUsername, changePassword } from './actions';
 
-const LogoutButton = ({onClick}) => (
-  <div>
-    <p>name here?</p>
+const LogoutButton = ({onClick, user}) => (
+  <div className="col-4">
+    <h3>Welcome: <strong>{user ? user.username : ""}</strong></h3>
     <button onClick={onClick} className="btn btn-secondary">Logout</button>
   </div>);
 
@@ -19,7 +19,8 @@ const LoginForm = ({
   password,
   onLogin,
   onRegister,
-}) => session ? (<LogoutButton onClick={onLogout} />) : (
+  user,
+}) => session ? (<LogoutButton onClick={onLogout} user={user} />) : (
   <div className="col-6">
     <form onSubmit={(e) => {e.preventDefault(); onLogin();}}>
     <div className="form-inline flex-row-reverse my-2">
@@ -47,12 +48,13 @@ const LoginForm = ({
  )
 
 export default connect(
-  ({session, forms: {login: {username, password}}}) => ({
+  ({session, users,  forms: {login: {username, password}}}) => ({
     username,
     password,
     session,
     onLogin: () => api.session.create(username, password),
-    onRegister: () => api.users.register(username, password)
+    onRegister: () => api.users.register(username, password),
+    user: _.find(users, (u) => session && session.user_id === u.id)
   }),
   dispatch => ({
     onChangeUsername: (val) => dispatch(changeUsername(val)),
