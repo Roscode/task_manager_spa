@@ -17,6 +17,9 @@ defmodule TaskManagerSpaWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/users", PageController, :index
+    get "/tasks", PageController, :index
+    get "/sessions", PageController, :index
   end
 
   scope "/api/v1", TaskManagerSpaWeb do
@@ -24,5 +27,6 @@ defmodule TaskManagerSpaWeb.Router do
 
     resources "/tasks", TaskController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
+    resources "/sessions", SessionController, only: [:create]
   end
 end

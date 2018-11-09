@@ -5,6 +5,7 @@ defmodule TaskManagerSpa.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :username, :string, null: false
       add :password_hash, :string, null: false
+      add :admin, :boolean, default: false, null: false
 
       timestamps()
     end

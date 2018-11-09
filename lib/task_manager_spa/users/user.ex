@@ -6,6 +6,7 @@ defmodule TaskManagerSpa.Users.User do
   schema "users" do
     field :password_hash, :string
     field :username, :string
+    field :admin, :boolean
     has_many :tasks, TaskManagerSpa.Tasks.Task, foreign_key: :assignee_id
 
     timestamps()
@@ -14,7 +15,7 @@ defmodule TaskManagerSpa.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password_hash])
+    |> cast(attrs, [:username, :password_hash, :admin])
     |> unique_constraint(:username)
     |> validate_required([:username, :password_hash])
   end

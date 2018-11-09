@@ -37,6 +37,19 @@ defmodule TaskManagerSpa.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_username(u) do
+    Repo.get_by(User, username: u)
+  end
+
+  def get_and_auth_user(u, pw) do
+    user = get_user_by_username(u)
+    case Comeonin.Argon2.check_pass(user, pw) do
+      {:ok, user} -> user
+      _else -> nil
+    end
+  end
+
+
   @doc """
   Creates a user.
 

@@ -1,11 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import _ from 'lodash';
-import $ from 'jquery';
+import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
+import TaskList from './TaskList.jsx';
+import UserList from './UserList.jsx';
 
 export default function root_init(node) {
   let tasks = window.tasks;
   ReactDOM.render(<Root tasks={tasks} />, node);
+}
+
+const ajaxDefault = {
+      method: "get",
+      dataType: "json",
+      contenType: "application/json; charset=UTF-8",
+      data: "",
 }
 
 class Root extends React.Component {
@@ -14,33 +22,54 @@ class Root extends React.Component {
     this.state = {
       tasks: props.tasks
     }
-
-    // this.fetch_tasks();
+    this.fetch_users();
   }
 
   fetch_tasks() {
     $.ajax("/api/v1/tasks", {
-      method: "get",
-      dataType: "json",
-      contenType: "application/json; charset=UTF-8",
-      data: "",
-      success: (resp) => this.setState({...this.state, tasks: resp.data })
-    })
+      ...ajaxDefault,
+      success: ({data: tasks}) => this.setState({tasks})
+    });
+  }
+
+  fetch_users() {
+    $.ajax("/api/v1/users", {
+      ...ajaxDefault,
+      success: ({data: users}) => this.setState({users})
+    });
+  }
+
+  create_session(username, password) {
+    $.ajax("/api/v1/sessions", {
+      ...ajaxDefault,
+      method: "post",
+      data: JSON.stringify({username, password}),
+      success: ({data: session}) => this.setState({session})
+    });
   }
 
   render() {
+    const {tasks, users} = this.state;
     return (
       <div>
-        <Header />
-        <TaskList tasks={this.state.tasks} />
+        <Router>
+          <div>
+            <Header root={this}/>
+            <Route path="/" exact={true} render={() => <TaskList tasks={tasks}/>}/>
+            <Route path="/users" exact={true} render={() => <UserList users={users}/>}/>
+          </div>
+        </Router>
       </div>);
   }
 }
 
-const Header = () => (
+const Header = ({root}) => (
   <div className="row my-2 justify-content-between">
     <div className="col-4">
-      <h1>Task Manager</h1>
+      <h1><Link to={"/"} onClick={root.fetch_tasks.bind(root)}>Task Manager</Link></h1>
+    </div>
+    <div className="col-2">
+      <p><Link to={"/users"} onClick={root.fetch_users.bind(root)}>Users</Link></p>
     </div>
     <div className="col-6">
       <div className="form-inline my-2">
@@ -50,22 +79,3 @@ const Header = () => (
       </div>
     </div>
   </div>);
-
-const TaskList = ({tasks}) => (
-  <div>
-    <h2>Tasks</h2>
-  <div className="row">
-    {_.map(tasks, (task) => <Task key={task.id} {...task} />)}
-</div></div>);
-
-const Task = ({title, description, minutes_worked, completed}) => (
-  <div className="card col-4">
-    <div className="card-body">
-      <h3 className="card-title">{title}</h3>
-      <p className="card-text">description: {description}<br/>
-        time worked: {minutes_worked}<br/>
-        completed: {completed ? 'yes' : 'no'}
-      </p>
-    </div>
-  </div>);
-
