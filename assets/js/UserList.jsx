@@ -1,6 +1,9 @@
 import React from 'react';
 
-const User = ({username}) => <tr><td>{username}</td></tr>;
+const User = ({username, admin}) => <tr>
+  <td>{username}</td>
+  <td>{admin ?  'yes' : 'no'}</td>
+  </tr>;
 
 const UserList =  ({users}) => {
   const rows = _.map(users, (u) => <User key={u.id} {...u}/>);
@@ -11,6 +14,7 @@ const UserList =  ({users}) => {
           <thead>
             <tr>
               <th>Username</th>
+              <th>admin?</th>
             </tr>
           </thead>
           <tbody>

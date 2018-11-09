@@ -12,7 +12,7 @@ export default function root_init(node) {
 const ajaxDefault = {
       method: "get",
       dataType: "json",
-      contenType: "application/json; charset=UTF-8",
+      contentType: "application/json; charset=UTF-8",
       data: "",
 }
 

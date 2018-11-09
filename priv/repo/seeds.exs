@@ -14,7 +14,7 @@ alias TaskManagerSpa.Users.User
 
 pwhash = Argon2.hash_pwd_salt("passw0rd")
 
-roscode = Repo.insert!(%User{username: "roscode", password_hash: pwhash})
+roscode = Repo.insert!(%User{username: "roscode", password_hash: pwhash, admin: true})
 Repo.insert!(%User{username: "anotheruser", password_hash: pwhash})
 
 alias TaskManagerSpa.Tasks.Task
@@ -23,3 +23,11 @@ Repo.insert!(%Task{title: "Do your homework", description: "it's due tomorrow", 
 Repo.insert!(%Task{title: "take a break", description: "you deserve it"})
 Repo.insert!(%Task{title: "do something in the past", description: "is that even possible?", completed: true})
 Repo.insert!(%Task{title: "blahblah", description: "weoifnwoef"})
+
+Repo.insert!(%Task{title: "task1", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task2", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task3", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task4", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task5", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task6", description: "ssssssssss"})
+Repo.insert!(%Task{title: "task7", description: "ssssssssss"})
