@@ -6,7 +6,8 @@ defmodule TaskManagerSpa.Repo.Migrations.CreateTasks do
       add :title, :string, null: false
       add :description, :text, default: "", null: false
       add :minutes_worked, :integer, default: 0, null: false
-      add :assignee_id, references(:users, on_delete: :nothing)
+      add :completed, :boolean, default: false, null: false
+      add :assignee_id, references(:users, on_delete: :nilify_all)
 
       timestamps()
     end

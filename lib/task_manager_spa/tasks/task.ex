@@ -7,6 +7,7 @@ defmodule TaskManagerSpa.Tasks.Task do
     field :description, :string
     field :minutes_worked, :integer
     field :title, :string
+    field :completed, :boolean
     belongs_to :user, TaskManagerSpa.Users.User, foreign_key: :assignee_id
 
     timestamps()
@@ -15,8 +16,8 @@ defmodule TaskManagerSpa.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :minutes_worked])
+    |> cast(attrs, [:title, :description, :minutes_worked, :completed])
     |> unique_constraint(:title)
-    |> validate_required([:title, :description, :minutes_worked])
+    |> validate_required([:title])
   end
 end

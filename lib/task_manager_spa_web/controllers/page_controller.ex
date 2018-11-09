@@ -2,6 +2,9 @@ defmodule TaskManagerSpaWeb.PageController do
   use TaskManagerSpaWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    tasks = TaskManagerSpa.Tasks.list_tasks()
+            |> Enum.map(&(Map.take(&1, [:id, :title, :description, :minutes_worked, :completed])))
+    IO.inspect(tasks)
+    render conn, "index.html", tasks: tasks
   end
 end

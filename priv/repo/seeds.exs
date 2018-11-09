@@ -19,5 +19,7 @@ Repo.insert!(%User{username: "anotheruser", password_hash: pwhash})
 
 alias TaskManagerSpa.Tasks.Task
 
-Repo.insert!(%Task{title: "Do your homework", description: "it's due tomorrow", assignee_id: roscode.id })
+Repo.insert!(%Task{title: "Do your homework", description: "it's due tomorrow", assignee_id: roscode.id, completed: false })
 Repo.insert!(%Task{title: "take a break", description: "you deserve it"})
+Repo.insert!(%Task{title: "do something in the past", description: "is that even possible?", completed: true})
+Repo.insert!(%Task{title: "blahblah", description: "weoifnwoef"})

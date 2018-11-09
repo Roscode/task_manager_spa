@@ -10,8 +10,8 @@ import css from "../css/app.scss"
 // Import dependencies
 //
 import "phoenix_html"
-import jQuary from 'jquery';
-window.jQuery = window.$ = window.jQuery;
+import jQuery from 'jquery';
+window.jQuery = window.$ = jQuery;
 import 'bootstrap';
 import _ from 'lodash';
 
