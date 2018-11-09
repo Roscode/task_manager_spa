@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 const TaskList = ({tasks}) => (
@@ -19,4 +20,4 @@ const Task = ({title, description, minutes_worked, completed}) => (
     </div>
   </div>);
 
-export default TaskList;
+export default connect(s => s)(TaskList);

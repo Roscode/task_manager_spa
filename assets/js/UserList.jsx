@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const User = ({username, admin}) => <tr>
   <td>{username}</td>
@@ -25,4 +26,4 @@ const UserList =  ({users}) => {
     </div>);
 }
 
-export default UserList;
+export default connect(s => s)(UserList)

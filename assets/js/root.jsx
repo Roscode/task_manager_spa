@@ -1,65 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import TaskList from './TaskList.jsx';
 import UserList from './UserList.jsx';
-import Header from './Header.jsx';
+import LoginForm from './LoginForm.jsx';
+import api from './api';
 
-export default function root_init(node) {
-  let tasks = window.tasks;
-  ReactDOM.render(<Root tasks={tasks} />, node);
+export default function root_init(node, store) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Root tasks={window.tasks} />
+    </Provider>, node);
 }
 
-const ajaxDefault = {
-      method: "get",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: "",
-}
+const Header = () => (
+  <div className="row my-2 justify-content-between">
+    <div className="col-4">
+      <h1><Link to={"/"} onClick={api.tasks.list}>Task Manager</Link></h1>
+    </div>
+    <div className="col-2">
+      <p><Link to={"/users"} onClick={api.users.list}>Users</Link></p>
+    </div>
+    <LoginForm />
+  </div>);
+
 
 class Root extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tasks: props.tasks,
-      users: [],
-      session: null,
-    }
-    this.fetch_users();
-  }
-
-  fetch_tasks() {
-    $.ajax("/api/v1/tasks", {
-      ...ajaxDefault,
-      success: ({data: tasks}) => this.setState({tasks})
-    });
-  }
-
-  fetch_users() {
-    $.ajax("/api/v1/users", {
-      ...ajaxDefault,
-      success: ({data: users}) => this.setState({users})
-    });
-  }
-
-  create_session(username, password) {
-    $.ajax("/api/v1/sessions", {
-      ...ajaxDefault,
-      method: "post",
-      data: JSON.stringify({username, password}),
-      success: ({data: session}) => this.setState({session})
-    });
+    api.tasks.list();
+    api.users.list();
   }
 
   render() {
-    const {tasks, users} = this.state;
     return (
       <div>
         <Router>
           <div>
             <Header root={this}/>
-            <Route path="/" exact={true} render={() => <TaskList tasks={tasks}/>}/>
-            <Route path="/users" exact={true} render={() => <UserList users={users}/>}/>
+            <Route path="/" exact={true} render={() => <TaskList />}/>
+            <Route path="/users" exact={true} render={() => <UserList />}/>
           </div>
         </Router>
       </div>);

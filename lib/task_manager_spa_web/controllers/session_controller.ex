@@ -15,6 +15,10 @@ defmodule TaskManagerSpaWeb.SessionController do
       conn
       |> put_resp_header("content-type", "application/json; charset=utf-8")
       |> send_resp(:created, Jason.encode!(resp))
+    else
+      _err ->
+        conn
+        |> send_resp(:unauthorized, Jason.encode!(%{error: "unathorized"}))
     end
   end
 end
