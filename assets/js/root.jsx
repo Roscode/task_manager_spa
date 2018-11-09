@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import TaskList from './TaskList.jsx';
 import UserList from './UserList.jsx';
+import Header from './Header.jsx';
 
 export default function root_init(node) {
   let tasks = window.tasks;
@@ -20,7 +21,9 @@ class Root extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: props.tasks
+      tasks: props.tasks,
+      users: [],
+      session: null,
     }
     this.fetch_users();
   }
@@ -62,20 +65,3 @@ class Root extends React.Component {
       </div>);
   }
 }
-
-const Header = ({root}) => (
-  <div className="row my-2 justify-content-between">
-    <div className="col-4">
-      <h1><Link to={"/"} onClick={root.fetch_tasks.bind(root)}>Task Manager</Link></h1>
-    </div>
-    <div className="col-2">
-      <p><Link to={"/users"} onClick={root.fetch_users.bind(root)}>Users</Link></p>
-    </div>
-    <div className="col-6">
-      <div className="form-inline my-2">
-        <input type="text" className="form-control" placeholder="username" />
-        <input type="password" className="form-control" placeholder="password"/>
-        <button className="btn btn-secondary">Login</button>
-      </div>
-    </div>
-  </div>);
