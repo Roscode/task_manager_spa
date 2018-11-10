@@ -27,13 +27,13 @@ const LoginForm = ({
       <div className="input-group">
         <input
           onChange={({target: {value}}) => updateField('username', value)}
-          value={username}
+          value={username || ""}
           type="text"
           className="form-control"
           placeholder="username" />
         <input
           onChange={({target: {value}}) => updateField('password', value)}
-          value={password}
+          value={password || ""}
           type="password"
           className="form-control"
           placeholder="password"/>
