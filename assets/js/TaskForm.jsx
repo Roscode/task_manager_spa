@@ -11,7 +11,6 @@ class TaskForm extends React.Component {
   }
 
   componentDidMount() {
-    console.log("mounted");
     this.props.loadTask()
   }
 

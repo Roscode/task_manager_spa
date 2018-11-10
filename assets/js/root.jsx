@@ -42,7 +42,8 @@ class Root extends React.Component {
             <Header root={this}/>
             <Route path="/" exact={true} render={() => <TaskList />}/>
             <Route path="/users" exact={true} render={() => <UserList />}/>
-            <Route path="/tasks/:task_id" render={({match: {params: {task_id}}}) => <TaskForm task_id={task_id}/>}/>
+            <Route path="/tasks/:task_id" exact={true} render={({match: {params: {task_id}}}) => <TaskForm task_id={task_id}/>}/>
+            <Route path="/task/new" exact={true} render={() => <TaskForm />}/>
           </div>
         </Router>
       </div>);

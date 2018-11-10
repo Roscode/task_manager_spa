@@ -20,7 +20,7 @@ const LoginForm = ({
   onRegister,
   user,
   updateField,
-}) => session ? (<LogoutButton onClick={onLogout} user={user} />) : (
+}) => session ? console.log(session, user) || (<LogoutButton onClick={onLogout} user={user} />) : (
   <div className="col-6">
     <form onSubmit={(e) => {e.preventDefault(); onLogin();}}>
     <div className="form-inline flex-row-reverse my-2">
@@ -51,8 +51,8 @@ export default connect(
   ({session, users,  forms: {[LOGIN_FORM]: form}}) => ({
     ...form,
     session,
-    onLogin: () => api.session.create(username, password),
-    onRegister: () => api.users.register(username, password),
+    onLogin: () => api.session.create(form.username, form.password),
+    onRegister: () => api.users.register(form.username, form.password),
     user: _.find(users, (u) => session && session.user_id === u.id)
   }),
   dispatch => ({

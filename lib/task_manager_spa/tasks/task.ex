@@ -8,7 +8,7 @@ defmodule TaskManagerSpa.Tasks.Task do
     field :minutes_worked, :integer
     field :title, :string
     field :completed, :boolean
-    belongs_to :user, TaskManagerSpa.Users.User, foreign_key: :assignee_id
+    belongs_to :assignee, TaskManagerSpa.Users.User, foreign_key: :assignee_id
 
     timestamps()
   end
