@@ -14,6 +14,7 @@ defmodule TaskManagerSpaWeb.TaskView do
     %{id: task.id,
       title: task.title,
       description: task.description,
-      minutes_worked: task.minutes_worked}
+      minutes_worked: task.minutes_worked,
+      assignee_id: task.assignee_id}
   end
 end

@@ -17,6 +17,9 @@ class TaskForm extends React.Component {
 
   render(){
     const {
+      users = [],
+      session = null,
+      assignee_id = null,
       title = "",
       description = "",
       minutes_worked = 0,
@@ -46,13 +49,14 @@ class TaskForm extends React.Component {
         <div className="form-group">
           <label htmlFor="minutes_worked">Minutes Worked</label>
           <input value={minutes_worked}
+            disabled={!(session && assignee_id === session.id)}
             onChange={({target: {value}}) => updateField('minutes_worked', value)}
             type="number"
             step="15"
             className="form-control"
             id="minutes_worked"></input>
         </div>
-        <div className="form-check">
+        <div className="form-check my-2">
           <input value={completed}
             onChange={({target: {value}}) => updateField('completed', value)}
             type="checkbox"
@@ -60,9 +64,17 @@ class TaskForm extends React.Component {
             id="completed"></input>
           <label className="form-check-label" htmlFor="completed">Completed</label>
         </div>
-        <div className="form-group">
+        <div className="form-group-inline d-flex flex-row">
           <label htmlFor="assignee">Assigned To:</label>
-          {/* put a select here for users */}
+          <div className="input-group mx-2">
+            <select value={assignee_id || ""} onChange={({target: {value}}) => 
+                console.log(value) || updateField('assignee_id', value)}>
+              <option>Assign</option>
+              {_.map(users, ({id, username}) => (
+                <option key={id} value={id}>{username}</option>
+              ))}
+            </select>
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">Save</button>
       </form>);
@@ -71,8 +83,10 @@ class TaskForm extends React.Component {
 
 export default connect(
   (state, {task_id}) => (
-  ({users, forms: {[TASK_FORM]: form}}) => ({
+  ({session, users, forms: {[TASK_FORM]: form}}) => ({
     ...form,
+    users,
+    session,
     onSubmit: () => api.tasks.upsert(form),
     loadTask: () => api.tasks.edit(task_id)
   }))(state),

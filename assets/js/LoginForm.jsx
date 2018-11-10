@@ -25,10 +25,6 @@ const LoginForm = ({
     <form onSubmit={(e) => {e.preventDefault(); onLogin();}}>
     <div className="form-inline flex-row-reverse my-2">
       <div className="input-group">
-        <button type="submit" className="btn btn-primary">Login</button>
-        <button onClick={(e) => { e.preventDefault(); onRegister();}} className="btn btn-secondary">Register</button>
-      </div>
-      <div className="input-group">
         <input
           onChange={({target: {value}}) => updateField('username', value)}
           value={username}
@@ -41,6 +37,10 @@ const LoginForm = ({
           type="password"
           className="form-control"
           placeholder="password"/>
+      </div>
+      <div className="input-group">
+        <button type="submit" className="btn btn-primary">Login</button>
+        <button onClick={(e) => { e.preventDefault(); onRegister();}} className="btn btn-secondary">Register</button>
       </div>
     </div>
   </form>

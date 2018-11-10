@@ -16,7 +16,7 @@ defmodule TaskManagerSpa.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :minutes_worked, :completed])
+    |> cast(attrs, [:title, :description, :minutes_worked, :completed, :assignee_id])
     |> unique_constraint(:title)
     |> validate_required([:title])
   end

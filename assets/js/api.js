@@ -59,7 +59,7 @@ const tasks = {
   edit: (id) => get(`/tasks/${id}`, ({data}) => store.dispatch(editTask(data))),
   upsert: (task) => {
     if (!_.isUndefined(task.id)) {
-      put(`/tasks/${task.id}`, {task}, ({data}) => taskList())
+      put(`/tasks/${task.id}`, {task}, ({data}) => console.log(data) || taskList())
     } else {
       post(`/tasks`, {task}, ({data}) => taskList())
     }
