@@ -18,7 +18,8 @@ defmodule TaskManagerSpaWeb.Router do
 
     get "/", PageController, :index
     get "/users", PageController, :index
-    get "/tasks", PageController, :index
+    get "/tasks/", PageController, :index
+    get "/tasks/:task_id", PageController, :index
     get "/sessions", PageController, :index
   end
 

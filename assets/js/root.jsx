@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import TaskList from './TaskList.jsx';
+import TaskForm from './TaskForm.jsx';
 import UserList from './UserList.jsx';
 import LoginForm from './LoginForm.jsx';
 import api from './api';
@@ -41,6 +42,7 @@ class Root extends React.Component {
             <Header root={this}/>
             <Route path="/" exact={true} render={() => <TaskList />}/>
             <Route path="/users" exact={true} render={() => <UserList />}/>
+            <Route path="/tasks/:task_id" render={({match: {params: {task_id}}}) => <TaskForm task_id={task_id}/>}/>
           </div>
         </Router>
       </div>);

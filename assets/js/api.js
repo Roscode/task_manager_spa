@@ -1,5 +1,5 @@
 import store from './store';
-import { newSession, taskList, userList } from './actions';
+import { editTask, newSession, taskList, userList } from './actions';
 
 const ajaxDefaults = {
   method: "get",
@@ -24,28 +24,46 @@ const post = (path, data, success) => {
   });
 };
 
+const put = (path, data, success) => {
+  $.ajax(`/api/v1${path}`, {
+    ...ajaxDefaults,
+    method: "put",
+    data: JSON.stringify(data),
+    success,
+  });
+};
+
 const session = {
-    create: (username, password) => {
-      post(
-        "/sessions",
-        {username, password},
-        ({data}) => store.dispatch(newSession(data)))
-    },
+  create: (username, password) => {
+    post(
+      "/sessions",
+      {username, password},
+      ({data}) => store.dispatch(newSession(data)))
+  },
 };
 
 const users = {
-    list: () => {
-      get("/users", ({data}) => store.dispatch(userList(data)))
-    },
-    register: (username, password) => {
-      post("/users", {user: {username, password}}, ({data}) => {
-        return session.create(username, password);
-      });
-    }
+  list: () => {
+    get("/users", ({data}) => store.dispatch(userList(data)))
+  },
+  register: (username, password) => {
+    post("/users", {user: {username, password}}, ({data}) => {
+      return session.create(username, password);
+    });
+  }
 };
 
+const list = () => get("/tasks", ({data}) => store.dispatch(taskList(data)));
 const tasks = {
-    list: () => get("/tasks", ({data}) => store.dispatch(taskList(data)))
+  list: list,
+  edit: (id) => get(`/tasks/${id}`, ({data}) => store.dispatch(editTask(data))),
+  upsert: (task) => {
+    if (!_.isUndefined(task.id)) {
+      put(`/tasks/${task.id}`, {task}, ({data}) => taskList())
+    } else {
+      post(`/tasks`, {task}, ({data}) => taskList())
+    }
+  },
 };
 
 const api = {

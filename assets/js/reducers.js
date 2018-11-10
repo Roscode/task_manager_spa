@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import deepFreeze from 'deep-freeze';
-import {LOGIN_FORM, USER_LIST, TASK_LIST, NEW_SESSION} from './constants';
+import * as c from './constants';
 
 const simpleUpdateReducer = (actionType, initState) =>
   (state = initState, {type, data}) => {
@@ -12,32 +11,36 @@ const simpleUpdateReducer = (actionType, initState) =>
     }
 }
 
-const tasks = simpleUpdateReducer(TASK_LIST, []);
-const users = simpleUpdateReducer(USER_LIST, []);
-const session = simpleUpdateReducer(NEW_SESSION, null);
-const login = (state = {username: "", password: ""}, {type, data}) => {
+const tasks = simpleUpdateReducer(c.TASK_LIST, []);
+const users = simpleUpdateReducer(c.USER_LIST, []);
+const session = simpleUpdateReducer(c.NEW_SESSION, null);
+
+const forms = (state = {}, {type, data}) => {
   switch (type) {
-    case LOGIN_FORM.CHANGE_USERNAME:
-      return {...state, username: data};
-    case LOGIN_FORM.CHANGE_PASSWORD:
-      return {...state, password: data};
-    case NEW_SESSION:
-      return {username: "", password: ""};
+    case c.UPDATE_FORM_FIELD:
+      const {form, field, value} = data;
+      const newState = {
+        ...state,
+        [form]: {...state[form], [field]: value}
+      };
+      return newState;
+    case c.EDIT_TASK:
+      return {
+        ...state,
+        [c.TASK_FORM]: data
+      };
     default:
-      return state;
+      return state
   }
 }
 
 export const rootReducer = (state, action) =>
-  deepFreeze(
-    combineReducers({
-      tasks,
-      users,
-      session,
-      forms: combineReducers({
-        login
-      }),
-    })(state, action))
+  combineReducers({
+    tasks,
+    users,
+    session,
+    forms,
+  })(state, action)
 
 
 export default rootReducer;
